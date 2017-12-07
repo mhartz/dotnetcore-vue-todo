@@ -1,6 +1,15 @@
 ﻿<template>
     <div>
         <h1>Things I need to do</h1>
+        <ul v-if="todos.length">
+            <li v-for="item in todos">
+                {{item.description}} –
+                <button v-on:click="completeItem(item)" class="btn btn-link">
+                    Completed
+                </button>
+            </li>
+        </ul>
+        <p v-else class="text-success">Nothing to do right now!</p>
     </div>
 </template>
 <script src="./todos.ts"></script>
