@@ -20,6 +20,37 @@ export default class TodoComponent extends Vue {
             });
     }
 
+    completeItem (item: TodoItem) {
+        fetch('/api/todo/${item.id}', {
+            method: 'delete',
+            headers: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            })
+        })
+        .then(() => {
+            this.todos = this.todos.filter((t) => t.id !== item.id);
+        });
+    }
+
+    addItem (event: any) {
+        if(event) event.preventDefault();
+         
+        fetch('/api/todo', {
+            method: 'post',
+            body: JSON.stringify(<TodoItem>{description: this.newItemDescription}),
+            headers: new Headers({
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            })
+        })
+        .then(response => response.json() as Promise<TodoItem>)
+        .then((newItem) => {
+            this.todos.push(newItem);
+            this.newItemDescription = '';
+        });
+    }
+
     data() {
         return {
             todos: [],
